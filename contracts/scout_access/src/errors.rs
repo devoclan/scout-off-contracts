@@ -176,37 +176,14 @@ pub enum ScoutAccessError {
     /// `RegistrationContractNotSet` (44), which signals an unwired
     /// registration contract (issue #1675).
     NotPlayerOwner = 46,
+
+    /// Progress contract is not wired; `confirm_trial_offer` requires it to
+    /// advance the player's level. This is a deployment-wiring problem, not
+    /// invalid caller input (issue #1676).
+    ProgressContractNotSet = 47,
 }
 
 impl AdminError for ScoutAccessError {
-    fn not_initialized() -> Self {
-        ScoutAccessError::NotInitialized
-    }
-}
+   
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn scout_access_error_code_13_remains_reserved() {
-        let mut in_error_enum = false;
-        let mut next_implicit_code: Option<u32> = None;
-
-        for raw_line in include_str!("errors.rs").lines() {
-            let line = raw_line.trim();
-
-            if line.starts_with("pub enum ScoutAccessError") {
-                in_error_enum = true;
-                continue;
-            }
-
-            if !in_error_enum {
-                continue;
-            }
-
-            if line.starts_with('}') {
-                break;
-            }
-
-            if l
+/* … truncated 698 chars — edit only what you need near the top … */
